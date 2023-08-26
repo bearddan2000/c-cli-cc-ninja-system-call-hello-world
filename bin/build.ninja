@@ -1,0 +1,14 @@
+rule create_file
+  command = touch main.c && echo "#include <stdio.h>" >> main.c && echo "#include <stdlib.h>" >> main.c && echo "int main() { printf(\"Hello world!\n\"); return 0; }" >> main.c
+
+rule cc
+  command = cc -c $in -o $out
+  description = CC $out
+
+rule link
+  command = cc -o $out $in
+  description = LINK $out
+
+build main.c: create_file
+build main.o: cc main.c
+build main: link main.o
